@@ -1,0 +1,31 @@
+<div class="text-3xl font-semibold tracking-tight leading-8 text-center">Let's get to know you</div>
+<div mat-dialog-content class="d-flex flex-column justify-center m-5 text-center overflow-hidden">
+    <mat-form-field class="w-30 md:w-100 lg:w-100 mr-5" appearance="fill">
+        <mat-label class="required">Occupation</mat-label>
+        <mat-select [(ngModel)]="userDetails.Occupation">
+            <mat-option *ngFor="let occupation of occupations" [value]="occupation.value">{{occupation.label}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-30 md:w-100 lg:w-100 mr-5" appearance="fill">
+        <mat-label>Affiliation</mat-label>
+        <input matInput placeholder="Enter Affiliation" [value]="userDetails.Affiliation">
+    </mat-form-field>
+    <mat-form-field class="w-30 md:w-100 lg:w-100 mr-5" appearance="fill">
+        <mat-label>Email
+             <mat-icon class="pointer-events-auto cursor-help" matTooltip="Email will be used to send newsletters, CEDA will never spam you with unnecessary mails." [svgIcon]="'heroicons_solid:information-circle'" [color]="'primary'"></mat-icon>
+        </mat-label>
+        <input matInput placeholder="Enter Valid Email" [value]="userDetails.emailAddress">
+    </mat-form-field>
+    <section class="example-section">
+        <mat-checkbox [(ngModel)]="userDetails.isChecked" class="example-margin">By clicking this checkbox, you agree to <a target="_blank" href="#">Terms & Conditions</a> and that you have read our <a target="_blank" href="#">Privacy Policy.</a></mat-checkbox>
+    </section>
+</div>
+<div mat-dialog-actions class="flex justify-center">
+    <button [disabled]="!userDetails.isChecked || userDetails.Occupation === ''" (click)="submitForm()" class="w-60 mb-5" mat-raised-button [color]="'warn'">
+        <span *ngIf="!loading">Submit</span>
+        <svg *ngIf="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+    </button>
+</div>
