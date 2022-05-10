@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import * as moment from 'moment';
 import { environment } from 'environments/environment';
 
 @Injectable({
@@ -52,5 +51,9 @@ export class DashboardService {
 
     getFilteredData(filterJson: Object, varId: number): Observable<any> {
         return this._httpClient.post(this.url + 'reports/getFilteredData', filterJson , { params: {varId} })
+    }
+
+    addUserToMailingList(userData: Object): Observable<any> {
+        return this._httpClient.post(this.url + 'mailchimp/addMemberToList', userData)
     }
 }

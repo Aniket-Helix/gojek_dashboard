@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { OCCUPATIONS } from '../constant';
+import { DashboardService } from '../services/analytics.service';
 
 @Component({
   selector: 'app-first-time-popup',
@@ -14,19 +16,39 @@ export class FirstTimePopupComponent implements OnInit {
     Occupation: '',
     Affiliation: '',
     emailAddress: '',
-    isChecked: false
+    isChecked: false,
+    isSubscribedToNewsLetter: true,
+    isSubscribedToEventUpdate: false,
+    isSubscribedToCareerOpportunities: false
   }
   loading: boolean;
   occupations = OCCUPATIONS;
 
-  constructor(public dialogRef: MatDialogRef<FirstTimePopupComponent>, private cookieService: CookieService) { }
+  constructor(public dialogRef: MatDialogRef<FirstTimePopupComponent>, private cookieService: CookieService, private _dashboardService: DashboardService, public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
 
   submitForm(): void {
-    this.cookieService.set('cena', 'user-details')
-    this.dialogRef.close();
+    const payload = {
+        "email_address": this.userDetails.emailAddress,
+        "status":"subscribed",
+        "tags": ["Careers", "Events"]
+    }
+    this._dashboardService.addUserToMailingList(payload).subscribe(res=> {
+      if (res.type === 'success' && res.status) {
+        this.cookieService.set('cena', 'user-details')
+        this.dialogRef.close();
+        this._snackBar.open("User added in mailchimp", "Cancel", {
+          duration: 3000
+        })
+      }else{
+        this._snackBar.open("Error occured at the time of adding USer in mailchimp", "Cancel", {
+          duration: 3000
+        })
+      }
+    })
   }
-
 }
+
+

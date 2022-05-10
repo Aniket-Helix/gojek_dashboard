@@ -5,7 +5,7 @@ import { PlotlyService } from 'angular-plotly.js';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ReportUtils } from '../common-report-util';
-import { REGIONS, REPORT_VAR } from '../constant';
+import { REGIONS } from '../constant';
 import { FirstTimePopupComponent } from '../first-time-popup/first-time-popup.component';
 import { DashboardService } from '../services/analytics.service';
 import { VariableNotesDialogComponent } from '../variable-notes-dialog/variable-notes-dialog.component';
@@ -40,8 +40,9 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
       this.varId = routeDetails.var_id;
       this.pageTitle = routeDetails.title;
       if(this.varId) {
-        this.getReportData();
         this.getVariableNotes();
+        this.getReportData();
+        
       }
     })
   }
@@ -49,15 +50,19 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
   getReportData() {
     this.loading = true;
     this._dashboardService.getData(this.varId).subscribe(res => {
-      if (res.type === 'success' && res.data) {
+      if (res.type === 'success' && res.data && Object.keys(res.data).length > 0) {
         this.graphData = res.data;
-        this._prepareChartData({}, this.graphData?.unit, 'Date', this.pageTitle);
+        this._prepareChartData({}, this.graphData?.unit, 'Date', this.pageTitle, this.variableNotes["credits"]);
         const { x, y } = res.data;
         this.chartConfig.name = this.graphData.unit;
         this.graph.data.push({x,y, ...this.chartConfig});
         this.availableFilters = [];
         this.selectedFilters = {};
         this._prepareFilters(res.data);
+      }
+      else{
+        this.loading = false;
+        this._snackBar.open(res.message, 'Cancel');
       }
     });
   }
@@ -89,7 +94,7 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
     this.filters.selectedMaxDate = new Date(Math.max.apply(null, dates));
     this.filters.minDate = new Date(Math.min.apply(null, dates));
     this.filters.selectedMinDate = new Date(Math.min.apply(null, dates));
-    if(JSON.stringify(this.graphData?.type[0]) === '{}') {
+    if(JSON.stringify(this.graphData?.type[0]) === '{}' || this.graphData?.type[0] === null) {
         delete this.graphData.type;
         this.loading = false;
     }
@@ -103,8 +108,9 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
       keys.forEach((key) => {
         parsedFilters[key] = [this.selectedFilters[key]]
       })
+      this.varId == 23 ? parsedFilters["Data"] = ["Tag Issuance"] : parsedFilters
       this._dashboardService.getFilteredData(parsedFilters, this.varId).subscribe((res) => {
-        if (res.type === 'success' && res.data) {
+        if (res.type === 'success' && res.data && Object.keys(res.data).length > 0){
           this.graph.data = [];
           this.graphData.x = res.data.x;
           this.graphData.y = res.data.y;
@@ -122,6 +128,8 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
             name = name.substring(0, 50) + '<br>' + name.substring(50, name.length);
           }
           this.graph.data.push({ x, y, name, hovertemplate });
+          this.loading = false;
+        }else{
           this.loading = false;
         }
       })

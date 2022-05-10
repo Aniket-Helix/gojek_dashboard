@@ -8,20 +8,25 @@
     </mat-form-field>
     <mat-form-field class="w-30 md:w-100 lg:w-100 mr-5" appearance="fill">
         <mat-label>Affiliation</mat-label>
-        <input matInput placeholder="Enter Affiliation" [value]="userDetails.Affiliation">
+        <input matInput placeholder="Enter Affiliation" [(ngModel)]="userDetails.Affiliation" [value]="userDetails.Affiliation">
     </mat-form-field>
     <mat-form-field class="w-30 md:w-100 lg:w-100 mr-5" appearance="fill">
         <mat-label>Email
              <mat-icon class="pointer-events-auto cursor-help" matTooltip="Email will be used to send newsletters, CEDA will never spam you with unnecessary mails." [svgIcon]="'heroicons_solid:information-circle'" [color]="'primary'"></mat-icon>
         </mat-label>
-        <input matInput placeholder="Enter Valid Email" [value]="userDetails.emailAddress">
+        <input matInput placeholder="Enter Valid Email" [(ngModel)]="userDetails.emailAddress" [value]="userDetails.emailAddress">
     </mat-form-field>
+    <div class="newsletter-event-career">
+         <mat-checkbox [(ngModel)]="userDetails.isSubscribedToNewsLetter" class="example-margin">Subscribe me to the Newsletter</mat-checkbox><br>
+         <mat-checkbox [(ngModel)]="userDetails.isSubscribedToEventUpdate" class="example-margin">Subscribe me to Event updates</mat-checkbox><br>
+         <mat-checkbox [(ngModel)]="userDetails.isSubscribedToCareerOpportunities" class="example-margin">Subscribe me to the Career opportunities</mat-checkbox>
+    </div>
     <section class="example-section">
         <mat-checkbox [(ngModel)]="userDetails.isChecked" class="example-margin">By clicking this checkbox, you agree to <a target="_blank" href="#">Terms & Conditions</a> and that you have read our <a target="_blank" href="#">Privacy Policy.</a></mat-checkbox>
     </section>
 </div>
 <div mat-dialog-actions class="flex justify-center">
-    <button [disabled]="!userDetails.isChecked || userDetails.Occupation === ''" (click)="submitForm()" class="w-60 mb-5" mat-raised-button [color]="'warn'">
+    <button [disabled]="!userDetails.isChecked || !userDetails.isSubscribedToNewsLetter || !userDetails.isSubscribedToEventUpdate || !userDetails.isSubscribedToCareerOpportunities || userDetails.Occupation === ''" (click)="submitForm()" class="w-60 mb-5" mat-raised-button [color]="'warn'">
         <span *ngIf="!loading">Submit</span>
         <svg *ngIf="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

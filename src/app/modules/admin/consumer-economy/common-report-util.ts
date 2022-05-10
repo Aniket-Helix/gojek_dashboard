@@ -40,7 +40,7 @@ export class ReportUtils {
         this.filters.selectedMaxDate = new Date(Math.max.apply(null, dates));
         this.filters.minDate = new Date(Math.min.apply(null, dates));
         this.filters.selectedMinDate = new Date(Math.min.apply(null, dates));
-        if(JSON.stringify(this.graphData?.type[0]) === '{}') {
+        if(JSON.stringify(this.graphData?.type[0]) === '{}' || this.graphData?.type[0] == null) {
             delete this.graphData.type;
             this.loading = false;
         }
@@ -58,7 +58,9 @@ export class ReportUtils {
         datepicker.close();
         const dateVal = new Date(date);
         if (dateVal > this.filters.selectedMaxDate) {
-            this._snackBar.open('From Date can not be more then To Date');
+            this._snackBar.open('From Date can not be more then To Date', 'Cancel', {
+                duration: 3000
+              });
             this.filters.selectedMinDate = this.filters.minDate;
             return;
         }
@@ -98,7 +100,9 @@ export class ReportUtils {
         datepicker.close();
         const dateVal = new Date(date);
         if (dateVal < this.filters.selectedMinDate) {
-            this._snackBar.open('To Date can not be less then From Date');
+            this._snackBar.open('To Date can not be less then From Date', 'Cancel', {
+                duration: 3000
+              });
             this.filters.selectedMaxDate = this.filters.maxDate;
             return;
         }
@@ -218,7 +222,8 @@ export class ReportUtils {
         legendOptions = {},
         yAxisTitle = 'y Axis',
         xAxisTitle = 'x Axis',
-        graphTitle = 'Graph'
+        graphTitle = 'Graph',
+        annotation_text = ''
     ): void {
         this.graph = {
             data: [],
@@ -263,14 +268,14 @@ export class ReportUtils {
                 },
                 legend: {
                     x: 0.9,
-                    xanchor: 'right',
+                    xanchor: 'left',
                     y: -0.8,
                     font: {
                         color: '#fff',
                     },
                     margin: {
                         t: 20,
-                        b: 20
+                        b: 20,
                     },
                     ...legendOptions,
                 },
@@ -287,6 +292,19 @@ export class ReportUtils {
                         yref: "paper"
                       },
                 ],
+                annotations: [{
+                    xref: 'paper',
+                    yref: 'paper',
+                    x: 0,
+                    xanchor: 'left',
+                    y: -0.4,
+                    yanchor: 'top',
+                    font: {
+                        color: '#fff',
+                    },
+                    text: annotation_text,
+                    showarrow: false
+                }]
             },
             config: {
                 displayModeBar: false,

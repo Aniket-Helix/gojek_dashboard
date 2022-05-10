@@ -1,4 +1,5 @@
 export const environment = {
     production: true,
-    api: 'https://ceda-api.herokuapp.com/'
+    api: 'https://gojek-apis.herokuapp.com/'
+    // api: 'http://localhost:3001/'
 };
