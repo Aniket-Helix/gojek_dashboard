@@ -6,6 +6,7 @@ import { NavigationService } from 'app/core/navigation/navigation.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ReportUtils } from '../common-report-util';
 import { REGIONS } from '../constant';
+import { DataFilterOptionsDialogComponent } from '../data-filter-options-dialog/data-filter-options-dialog.component';
 import { FirstTimePopupComponent } from '../first-time-popup/first-time-popup.component';
 import { DashboardService } from '../services/analytics.service';
 import { VariableNotesDialogComponent } from '../variable-notes-dialog/variable-notes-dialog.component';
@@ -99,6 +100,10 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
         this.loading = false;
     }
     else {
+      this.matDialog.open(DataFilterOptionsDialogComponent,{
+        width: '20%',
+        position: {top: '60px'}
+      })
       const objKeys = Object.keys(this.graphData.type[0])
       for (let i = 0; i < objKeys.length; i++) {
         this.selectedFilters[objKeys[i]] = this.graphData.type[0][objKeys[i]];

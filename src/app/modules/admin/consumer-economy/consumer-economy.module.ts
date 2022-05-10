@@ -29,6 +29,7 @@ import { VariableNotesDialogComponent } from './variable-notes-dialog/variable-n
 import { CookieService } from 'ngx-cookie-service';
 import { FirstTimePopupComponent } from './first-time-popup/first-time-popup.component';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DataFilterOptionsDialogComponent } from './data-filter-options-dialog/data-filter-options-dialog.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -49,7 +50,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     DataFiltersDialogComponent,
     GraphComponentComponent,
     VariableNotesDialogComponent,
-    FirstTimePopupComponent
+    FirstTimePopupComponent,
+    DataFilterOptionsDialogComponent
   ],
   imports: [
     CommonModule,
