@@ -18,7 +18,7 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DataFiltersDialogComponent } from './data-filters-dialog/data-filters-dialog.component';
@@ -28,6 +28,19 @@ import { VariableNotesDialogComponent } from './variable-notes-dialog/variable-n
 
 import { CookieService } from 'ngx-cookie-service';
 import { FirstTimePopupComponent } from './first-time-popup/first-time-popup.component';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 PlotlyModule.plotlyjs = PlotlyJS;
 @NgModule({
@@ -60,6 +73,12 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MatTooltipModule,
     MatCheckboxModule
   ],
-  providers: [CookieService]
+  providers: [CookieService, {
+    provide: DateAdapter,
+    useClass: MomentDateAdapter,
+    deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+  },
+
+  {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},]
 })
 export class ConsumerEconomyModule { }
