@@ -300,7 +300,7 @@ export class ReportUtils {
                     y: -0.4,
                     yanchor: 'top',
                     font: {
-                        color: 'red',
+                        color: '#C63652',
                     },
                     text: annotation_text,
                     showarrow: false

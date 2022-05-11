@@ -1,14 +1,14 @@
 a {
-    color: red;
+    color: #C63652;
 }
 .required:after {
     content:" *";
-    color: red;
+    color: #C63652;
 }
 mat-icon {
     min-width: 15px;
     min-height: 15px;
 }
 ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-    background-color: red!important;
+    background-color: #C63652!important;
 }

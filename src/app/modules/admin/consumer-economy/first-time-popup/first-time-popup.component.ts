@@ -31,18 +31,25 @@ export class FirstTimePopupComponent implements OnInit {
 
   submitForm(): void {
     if(this.userDetails.emailAddress !== ''){
+      const tags = [];
+      if (this.userDetails.isSubscribedToCareerOpportunities){
+        tags.push("Careers")
+      }
+      if (this.userDetails.isSubscribedToNewsLetter){
+        tags.push("Newsletter")
+      }
+      if (this.userDetails.isSubscribedToEventUpdate){
+        tags.push("Events")
+      }
       const payload = {
         "email_address": this.userDetails.emailAddress,
         "status":"subscribed",
-        "tags": ["Careers", "Events", "Newsletter"]
+        "tags": tags
       }
       this._dashboardService.addUserToMailingList(payload).subscribe(res=> {
         if (res.type === 'success' && res.status) {
           this.cookieService.set('cena', 'user-details')
           this.dialogRef.close();
-          this._snackBar.open("User added in mailchimp", "Cancel", {
-            duration: 3000
-          })
         }else{
           this._snackBar.open("Error occured at the time of adding User in mailchimp", "Cancel", {
             duration: 3000
