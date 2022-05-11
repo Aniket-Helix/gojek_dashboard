@@ -52,7 +52,6 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
     this._dashboardService.getData(this.varId).subscribe(res => {
       if (res.type === 'success' && res.data && Object.keys(res.data).length > 0) {
         this.graphData = res.data;
-        console.log(res.data)
         this._prepareChartData({}, this.graphData?.unit, 'Date', this.pageTitle, this.variableNotes["credits"]);
         const { x, y } = res.data;
         this.chartConfig.name = this.graphData.unit;
