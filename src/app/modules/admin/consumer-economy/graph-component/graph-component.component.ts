@@ -43,7 +43,6 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
       if(this.varId) {
         this.getVariableNotes();
         this.getReportData();
-        
       }
     })
   }
@@ -53,6 +52,7 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
     this._dashboardService.getData(this.varId).subscribe(res => {
       if (res.type === 'success' && res.data && Object.keys(res.data).length > 0) {
         this.graphData = res.data;
+        console.log(res.data)
         this._prepareChartData({}, this.graphData?.unit, 'Date', this.pageTitle, this.variableNotes["credits"]);
         const { x, y } = res.data;
         this.chartConfig.name = this.graphData.unit;
@@ -89,6 +89,13 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
     })
   }
 
+  showDataFilterOptionsDialog(): any{
+    this.matDialog.open(DataFilterOptionsDialogComponent,{
+      width: '20%',
+      position: {top: '60px'}
+    })
+  }
+
   _prepareFilters(data) {
     const dates = (data.x || []).map((x) => new Date(x));
     this.filters.maxDate = new Date(Math.max.apply(null, dates));
@@ -100,10 +107,7 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
         this.loading = false;
     }
     else {
-      this.matDialog.open(DataFilterOptionsDialogComponent,{
-        width: '20%',
-        position: {top: '60px'}
-      })
+      this.showDataFilterOptionsDialog();
       const objKeys = Object.keys(this.graphData.type[0])
       for (let i = 0; i < objKeys.length; i++) {
         this.selectedFilters[objKeys[i]] = this.graphData.type[0][objKeys[i]];
@@ -138,11 +142,11 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
           this.loading = false;
         }
       })
-        this.graphData.type.forEach(x => {
-            if(!this.availableFilters.some(y => JSON.stringify(y) === JSON.stringify(x))){
-              this.availableFilters.push(x)
-            }
-          })
+      this.graphData.type.forEach(x => {
+          if(!this.availableFilters.some(y => JSON.stringify(y) === JSON.stringify(x))){
+            this.availableFilters.push(x)
+          }
+      })
     }
   }
 
