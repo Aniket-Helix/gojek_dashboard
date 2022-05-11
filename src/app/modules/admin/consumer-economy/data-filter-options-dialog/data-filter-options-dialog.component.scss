@@ -3,3 +3,7 @@
     margin-top: -10px;
     margin-right: -10px;
 }
+
+::ng-deep .custom-color > mat-dialog-container{
+    background-image: linear-gradient(to right, #44da44, #35bc33, #269f22, #158211, #006700)!important;
+}

@@ -91,7 +91,8 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
   showDataFilterOptionsDialog(): any{
     this.matDialog.open(DataFilterOptionsDialogComponent,{
       width: '20%',
-      position: {top: '60px'}
+      position: {top: '60px'},
+      panelClass: "custom-color"
     })
   }
 
