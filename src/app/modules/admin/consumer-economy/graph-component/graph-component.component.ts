@@ -48,11 +48,13 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
   }
 
   getReportData() {
+    var creditNote = 'Source: --'
     this.loading = true;
     this._dashboardService.getData(this.varId).subscribe(res => {
       if (res.type === 'success' && res.data && Object.keys(res.data).length > 0) {
         this.graphData = res.data;
-        this._prepareChartData({}, this.graphData?.unit, 'Date', this.pageTitle, this.variableNotes["credits"]);
+        creditNote = this.variableNotes["credits"] != undefined ? `Source: ${this.variableNotes["credits"]}` : creditNote      
+        this._prepareChartData({}, this.graphData?.unit, 'Date', this.pageTitle, creditNote);
         const { x, y } = res.data;
         this.chartConfig.name = this.graphData.unit;
         this.graph.data.push({x,y, ...this.chartConfig});
@@ -84,13 +86,14 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
 
   showFirstTimePopup(): any {
     this.matDialog.open(FirstTimePopupComponent, {
-      width: '70%'
+      width: '70%',
+      // disableClose: true
     })
   }
 
   showDataFilterOptionsDialog(): any{
     this.matDialog.open(DataFilterOptionsDialogComponent,{
-      width: '20%',
+      width: '30%',
       position: {top: '60px'},
       panelClass: "custom-color"
     })
@@ -117,7 +120,10 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
       keys.forEach((key) => {
         parsedFilters[key] = [this.selectedFilters[key]]
       })
-      this.varId == 23 ? parsedFilters["Data"] = ["Tag Issuance"] : parsedFilters
+      if(this.varId == 23){
+        parsedFilters["Data"] = ["Tag Issuance"] 
+        this.selectedFilters ={Data: 'Tag Issuance'} 
+      }
       this._dashboardService.getFilteredData(parsedFilters, this.varId).subscribe((res) => {
         if (res.type === 'success' && res.data && Object.keys(res.data).length > 0){
           this.graph.data = [];
