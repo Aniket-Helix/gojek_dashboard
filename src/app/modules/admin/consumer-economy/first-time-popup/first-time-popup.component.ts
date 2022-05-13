@@ -61,6 +61,10 @@ export class FirstTimePopupComponent implements OnInit {
           }
         })
       }
+    }else{
+      this._snackBar.open("Please Enter Email", "Cancel", {
+        duration: 3000
+      })
     }
   }
 

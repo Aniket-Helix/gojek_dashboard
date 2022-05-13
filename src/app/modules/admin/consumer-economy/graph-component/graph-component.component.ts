@@ -93,7 +93,7 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
   showFirstTimePopup(): any {
     this.matDialog.open(FirstTimePopupComponent, {
       width: '70%',
-      // disableClose: true
+      disableClose: true
     })
   }
 
