@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, ReplaySubject, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Navigation } from 'app/core/navigation/navigation.types';
 import { environment } from 'environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,7 @@ export class NavigationService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
+    constructor(private _httpClient: HttpClient, private cookieService: CookieService)
     {
     }
 
@@ -29,7 +30,9 @@ export class NavigationService
      */
     get navigation$(): Observable<any>
     {
-        return this._httpClient.get(this.url + `sections/getSectionsAndVariables`);
+        let header = new HttpHeaders()
+        header=header.set('Authorization',`Bearer ${this.cookieService.get('token')}`)
+        return this._httpClient.get(this.url + `sections/getSectionsAndVariables`, {headers: header});
         // return this._navigation.asObservable();
     }
 

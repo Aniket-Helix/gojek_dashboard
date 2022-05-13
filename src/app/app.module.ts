@@ -12,6 +12,7 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { CreditsComponent } from './credits/credits.component';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -20,7 +21,8 @@ const routerConfig: ExtraOptions = {
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        CreditsComponent
     ],
     imports     : [
         BrowserModule,
@@ -36,8 +38,7 @@ const routerConfig: ExtraOptions = {
         CoreModule,
 
         // Layout module of your application
-        LayoutModule,
-
+        LayoutModule
     ],
     bootstrap   : [
         AppComponent

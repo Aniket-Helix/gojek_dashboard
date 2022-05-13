@@ -1,0 +1,62 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
+* {
+    box-sizing: border-box;
+}
+  
+.column {
+    float: left;
+    width: 25%;
+    padding: 50px;
+}
+i{
+    padding: 10px 5px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.close {
+    float: right;
+    margin-top: -10px;
+    margin-right: -10px;
+    margin-left: 10px;
+}
+
+.rounded-img {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+}	
+.text-center{
+    margin: auto;
+    padding: 20px;
+}
+.name{
+    padding: 5px 10px;
+    font-size: large;
+    color: #C63652;
+    font-weight: bolder;
+}
+.title{
+    font-size: small;
+    color: #C63652;
+    font-weight: 600;
+}
+.close{
+    background-color: #C63652;
+    border-radius: 50%;
+    border: none;
+}
+
+i.fa {
+    display: inline-block;
+    border-radius: 60px;
+    box-shadow: 0 0 2px #888;
+    padding: 0.5em 0.6em;
+}

@@ -9,6 +9,8 @@ import { NavigationService } from 'app/core/navigation/navigation.service';
 import { FuseConfigService } from '@fuse/services/config';
 import { Scheme } from 'app/core/config/app.config';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatDialog } from '@angular/material/dialog';
+import { CreditsComponent } from 'app/credits/credits.component';
 
 @Component({
     selector     : 'classic-layout',
@@ -32,6 +34,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService,
         private _fuseConfigService: FuseConfigService,
+        public matDialog: MatDialog,
     )
     {
     }
@@ -119,5 +122,11 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy
 
      navigationToggled(isOpened: boolean) {
         this.isNavigationOpen = isOpened;
+     }
+
+     openCreditDialog(){
+        this.matDialog.open(CreditsComponent, {
+            width: '50%',
+        });
      }
 }

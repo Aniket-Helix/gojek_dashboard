@@ -53,6 +53,11 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
     this._dashboardService.getData(this.varId).subscribe(res => {
       if (res.type === 'success' && res.data && Object.keys(res.data).length > 0) {
         this.graphData = res.data;
+        this.yoy = res.data.yoy
+        this.mom = res.data.mom
+        this.wow = res.data.wow
+        this.dod = res.data.dod
+        this.qoq = res.data.qoq
         creditNote = this.variableNotes["credits"] != undefined ? `Source: ${this.variableNotes["credits"]}` : creditNote      
         this._prepareChartData({}, this.graphData?.unit, 'Date', this.pageTitle, creditNote);
         const { x, y } = res.data;
@@ -70,6 +75,7 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
   }
 
   getVariableNotes() {
+    console.log("HERE")
     this._dashboardService.getVariableNotes(this.varId).subscribe(res=> {
       if (res.type === 'success' && res.data) {
         this.variableNotes = res.data;
@@ -87,7 +93,7 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
   showFirstTimePopup(): any {
     this.matDialog.open(FirstTimePopupComponent, {
       width: '70%',
-      disableClose: true
+      // disableClose: true
     })
   }
 
@@ -110,7 +116,6 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
         this.loading = false;
     }
     else {
-      this.showDataFilterOptionsDialog();
       const objKeys = Object.keys(this.graphData.type[0])
       for (let i = 0; i < objKeys.length; i++) {
         this.selectedFilters[objKeys[i]] = this.graphData.type[0][objKeys[i]];
@@ -135,9 +140,9 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
           const keys = Object.keys(this.selectedFilters);
           keys.forEach((key) => {
             if (name != '') {
-              name += ', '
+              name += ',  '
             }
-            name += `${key} : ${this.selectedFilters[key]}`
+            name += `${key}: ${this.selectedFilters[key]}`
           })
           if (name.length > 80) {
             name = name.substring(0, 50) + '<br>' + name.substring(50, name.length);
@@ -153,6 +158,7 @@ export class GraphComponentComponent extends ReportUtils implements OnInit {
             this.availableFilters.push(x)
           }
       })
+      this.showDataFilterOptionsDialog();
     }
   }
 

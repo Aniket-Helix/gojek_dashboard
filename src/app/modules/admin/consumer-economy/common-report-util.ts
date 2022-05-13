@@ -27,7 +27,11 @@ export class ReportUtils {
     availableFilters: any = [];
     selectedGraphType = null;
     varId: any = 0;
-
+    yoy = true
+    dod = true
+    mom = true
+    wow = true
+    qoq = true
     constructor(
         public plotlyService: PlotlyService,
         public matDialog: MatDialog,
@@ -267,7 +271,7 @@ export class ReportUtils {
                     },
                 },
                 legend: {
-                    x: 0.9,
+                    x: 0,
                     xanchor: 'left',
                     y: -0.8,
                     font: {

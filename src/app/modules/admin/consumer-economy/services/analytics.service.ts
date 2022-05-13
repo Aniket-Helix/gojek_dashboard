@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class DashboardService {
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) { }
+    constructor(private _httpClient: HttpClient, private cookieService: CookieService) { }
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
@@ -33,7 +34,9 @@ export class DashboardService {
      * Get data
      */
     getData(varId: number): Observable<any> {
-        return this._httpClient.get(this.url + 'reports/getAllData', { params: { varId } }).pipe(
+        let header = new HttpHeaders()
+        header=header.set('Authorization',`Bearer ${this.cookieService.get('token')}`)
+        return this._httpClient.get(this.url + 'reports/getAllData', {headers: header, params: {varId}}).pipe(
             tap((response: any) => {
                 this._data.next(response);
             })
@@ -46,14 +49,27 @@ export class DashboardService {
      * @returns Variable Notes
      */
     getVariableNotes(varId: number): Observable<any> {
-       return this._httpClient.get(this.url + 'sections/getVariableNotes', { params: { varId } });
+        let header = new HttpHeaders()
+        header=header.set('Authorization',`Bearer ${this.cookieService.get('token')}`)
+       return this._httpClient.get(this.url + 'sections/getVariableNotes', {headers: header, params: {varId}});
     }
 
     getFilteredData(filterJson: Object, varId: number): Observable<any> {
-        return this._httpClient.post(this.url + 'reports/getFilteredData', filterJson , { params: {varId} })
+        var header = {
+            headers: new HttpHeaders().set('Authorization',  `Bearer ${this.cookieService.get('token')}`),
+            params: { varId }
+        }
+        return this._httpClient.post(this.url + 'reports/getFilteredData', filterJson , header)
     }
 
     addUserToMailingList(userData: Object): Observable<any> {
-        return this._httpClient.post(this.url + 'mailchimp/addMemberToList', userData)
+        var header = {
+            headers: new HttpHeaders().set('Authorization',  `Bearer ${this.cookieService.get('token')}`),
+        }
+        return this._httpClient.post(this.url + 'mailchimp/addMemberToList', userData, header)
+    }
+
+    signup(email: String): Observable<any>{
+        return this._httpClient.post(this.url + 'auth/signup', {email: email})
     }
 }

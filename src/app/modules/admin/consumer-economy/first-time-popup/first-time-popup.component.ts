@@ -46,22 +46,36 @@ export class FirstTimePopupComponent implements OnInit {
         "status":"subscribed",
         "tags": tags
       }
-      this._dashboardService.addUserToMailingList(payload).subscribe(res=> {
-        if (res.type === 'success' && res.status) {
-          this.cookieService.set('cena', 'user-details')
-          this.dialogRef.close();
-        }else{
-          this._snackBar.open("Error occured at the time of adding User in mailchimp", "Cancel", {
-            duration: 3000
-          })
-        }
-      })
-    }else{
-      this._snackBar.open("Please provide Email", "Cancel", {
-        duration: 3000
-      })
+  
+      if(this.cookieService.get('token')){
+        this.addUserToMailChimp(payload)
+      }else{
+        this._dashboardService.signup(this.userDetails.emailAddress).subscribe(res => {
+          if (res.type === 'success' && res.status) {
+            this.cookieService.set('token', res.data);
+            this.addUserToMailChimp(payload)
+          }else{
+            this._snackBar.open("Error occured at the time of generating token", "Cancel", {
+              duration: 3000
+            })
+          }
+        })
+      }
     }
   }
+
+  addUserToMailChimp(payload){
+    this._dashboardService.addUserToMailingList(payload).subscribe(res=> {
+      if (res.type === 'success' && res.status) {
+        this.cookieService.set('cena', 'user-details');
+        this.dialogRef.close();
+        window.location.reload();
+      }
+      else{
+        this._snackBar.open("Error occured at the time of adding User in mailchimp", "Cancel", {
+          duration: 3000
+        })
+      }
+    })
+  }
 }
-
-
